@@ -1,5 +1,11 @@
 const searchName = (str, num, callback) => {
-  //   if (typeof callback !== "function") return "invalid parameter";
+  // validasi
+  if (typeof str !== "string") return "invalid! parameter harus string";
+  if (typeof num !== "number") return "invalid! paramater harus number";
+  if (typeof callback !== "function") return "invalid! parameter harus function";
+  if (num <= 0) return "Parameter harus lebih dari nol";
+
+  // proses
   const name = [
     "Abigail",
     "Alexandra",
@@ -19,22 +25,21 @@ const searchName = (str, num, callback) => {
     "Penelope",
   ];
 
-  const newName = callback(name);
-  let filterName = newName.filter((element) => element.indexOf(str) !== -1);
   let result = [];
-  filterName.map((element) => {
-    const upperName = element.charAt(0).toUpperCase() + element.slice(1);
-    result.push(upperName);
-  });
-  result = result.slice(0, num);
-  return result;
+  for (let i = 0; i < name.length; i++) {
+    if (callback(name[i], str)) {
+      result.push(name[i]);
+    }
+  }
+  if (result == 0) return "Data tidak ditemukan";
+  return result.slice(0, num); 
 };
 
-const toLowerCase = (name) => {
-  let newName = [];
-  for (let i = 0; i < name.length; i++) {
-    newName.push(name[i].toLowerCase());
-  }
-  return newName;
+// callback function => mencari data sesuai dengan kriteria yang diinginkan 
+const search = (element, input) => {
+  const searched = element.toLowerCase().indexOf(input.toLowerCase()) !== -1;
+  // console.log(searched); // true or false
+  return searched;
 };
-console.log(searchName("an", 3, toLowerCase));
+
+console.log(searchName("an", 3, search));
